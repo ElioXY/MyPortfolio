@@ -16,7 +16,9 @@
     "noFallthroughCasesInSwitch": true,
     "types": ["vite/client", "@cloudflare/workers-types"],
     "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
     "paths": { "@/*": ["src/*"] }
   },
   "include": ["src", "vite.config.ts"]
 }
+

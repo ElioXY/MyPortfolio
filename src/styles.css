@@ -1,0 +1,257 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/bricolage-grotesque';
+
+
+:root {
+  --app-bg: #f2efe9;
+  --app-surface: #f8f6f1;
+  --app-surface-2: #e9e5dd;
+  --app-line: #ddd8ce;
+  --app-line-strong: #c9c3b7;
+  --app-fg: #141311;
+  --app-muted: #6a665e;
+  --app-faint: #9c978d;
+  --app-accent: #2f3bff;
+  --app-accent-2: #ff6a3d;
+  --app-shadow: rgba(20, 19, 17, 0.35);
+
+  --grain-opacity: 0.22;
+  --grain-blend: multiply;
+  --field-opacity: 1;
+}
+
+html.dark {
+  --app-bg: #0e0f12;
+  --app-surface: #16181e;
+  --app-surface-2: #1e222a;
+  --app-line: #2a2e37;
+  --app-line-strong: #3c414d;
+  --app-fg: #f3f0ea;
+  --app-muted: #a7a49c;
+  --app-faint: #7a7770;
+  --app-accent: #8b93ff;
+  --app-accent-2: #ff8a5c;
+  --app-shadow: rgba(0, 0, 0, 0.55);
+
+  --grain-opacity: 0.1;
+  --grain-blend: screen;
+  --field-opacity: 0.45;
+}
+
+@theme inline {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: 'Bricolage Grotesque Variable', 'Inter Variable', ui-sans-serif, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', 'Menlo', monospace;
+
+  --color-bg: var(--app-bg);
+  --color-surface: var(--app-surface);
+  --color-surface-2: var(--app-surface-2);
+  --color-line: var(--app-line);
+  --color-line-strong: var(--app-line-strong);
+  --color-fg: var(--app-fg);
+  --color-muted: var(--app-muted);
+  --color-faint: var(--app-faint);
+  --color-accent: var(--app-accent);
+  --color-accent-2: var(--app-accent-2);
+
+  --radius-control: 14px;
+  --radius-card: 24px;
+  --radius-image: 28px;
+}
+
+@theme {
+  --animate-marquee: marquee 34s linear infinite;
+  --animate-drift-a: drift-a 22s ease-in-out infinite alternate;
+  --animate-drift-b: drift-b 26s ease-in-out infinite alternate;
+  --animate-drift-c: drift-c 30s ease-in-out infinite alternate;
+  --animate-spin-slow: rotate-slow 18s linear infinite;
+  @keyframes rotate-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes drift-a {
+    from {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    to {
+      transform: translate3d(-10%, 12%, 0) scale(1.12);
+    }
+  }
+  @keyframes drift-b {
+    from {
+      transform: translate3d(0, 0, 0) scale(1.05);
+    }
+    to {
+      transform: translate3d(14%, -8%, 0) scale(0.95);
+    }
+  }
+  @keyframes drift-c {
+    from {
+      transform: translate3d(0, 6%, 0) scale(0.95);
+    }
+    to {
+      transform: translate3d(-8%, -10%, 0) scale(1.15);
+    }
+  }
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    corner-shape: squircle;
+    border-color: var(--app-line);
+  }
+  .round,
+  .round::before,
+  .round::after {
+    corner-shape: round;
+  }
+
+
+  .rounded-full {
+    corner-shape: round;
+  }
+  html {
+    background: var(--app-bg);
+    color-scheme: light;
+    overscroll-behavior-y: none;
+    scroll-behavior: smooth;
+    
+    overflow-x: clip;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    background: var(--app-bg);
+    color: var(--app-fg);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.65;
+    letter-spacing: -0.013em;
+    font-optical-sizing: auto;
+    
+    font-feature-settings:
+      'cv02' 1,
+      'cv03' 1,
+      'cv04' 1;
+    font-variant-numeric: proportional-nums;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+    transition:
+      background-color 0.45s ease,
+      color 0.45s ease;
+  }
+  
+  p {
+    text-wrap: pretty;
+  }
+  button,
+  input,
+  textarea {
+    font: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+  }
+  :focus-visible {
+    outline: 2px solid var(--app-accent);
+    outline-offset: 3px;
+  }
+  ::selection {
+    background: var(--app-fg);
+    color: var(--app-bg);
+  }
+  img {
+    user-select: none;
+  }
+
+  
+  html[data-cursor='on'],
+  html[data-cursor='on'] * {
+    cursor: none !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+
+@utility font-display {
+  font-family: var(--font-display);
+  font-variation-settings:
+    'opsz' 96,
+    'wdth' 100;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+@utility text-pretty {
+  text-wrap: pretty;
+}
+
+
+@utility link-draw {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  transition: background-size 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  &:hover {
+    background-size: 100% 1px;
+  }
+}
+
+@utility image-frame {
+  background: var(--app-surface-2);
+  overflow: hidden;
+}
+
+
+@utility grain {
+  opacity: var(--grain-opacity);
+  mix-blend-mode: var(--grain-blend);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.3 0 0 0 0 0.3 0 0 0 0 0.3 0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+
+@utility hero-field {
+  opacity: var(--field-opacity);
+  transition: opacity 0.6s ease;
+}
+
+
+@utility nav-blur {
+  background: color-mix(in srgb, var(--app-bg) 78%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid color-mix(in srgb, var(--app-line) 70%, transparent);
+}
