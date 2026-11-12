@@ -42,7 +42,10 @@ export type FeedState =
 
 export type Feed = FeedState & { refresh: () => void }
 
-
+/**
+ * Los repositorios que van en la rejilla: primero los propios y después los
+ * forks (marcados como tales en la tarjeta), siempre por actividad reciente.
+ */
 export function visibleRepos(repos: Repo[]): Repo[] {
   return repos
     .filter((repo) => !repo.archived)
@@ -128,7 +131,12 @@ async function fetchDirect(login: string, signal: AbortSignal): Promise<GithubFe
   }
 }
 
-
+/**
+ * Primero el snapshot cacheado del Worker (rápido y con token si lo hay). Si
+ * falla —GitHub limita por IP y las de Cloudflare son compartidas—, se piden
+ * los datos al navegador del visitante, que tiene su propio cupo. Solo si
+ * ambas vías fallan se muestra la copia incluida en el sitio.
+ */
 export function useGithub(fallback: GithubFeed): Feed {
   const [state, setState] = useState<FeedState>({ status: 'loading', data: fallback, error: null })
   const [ticket, setTicket] = useState(0)
@@ -168,7 +176,7 @@ export function useGithub(fallback: GithubFeed): Feed {
   return { ...state, refresh: () => setTicket((value) => value + 1) }
 }
 
-
+/** "hace 2 días" / "2 days ago", con el formato del idioma activo. */
 export function timeAgo(iso: string, locale: string): string {
   const elapsed = Date.now() - Date.parse(iso)
   if (!Number.isFinite(elapsed)) return new Intl.RelativeTimeFormat(locale, { numeric: 'auto' }).format(0, 'day')

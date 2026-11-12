@@ -40,8 +40,12 @@ const app = new Hono<{ Bindings: Env }>()
 
 app.get('/api/health', (c) => c.json({ ok: true }))
 
-
-
+/**
+ * Live GitHub feed. The browser never talks to api.github.com directly: the
+ * Worker does it, caches the result at the edge for 15 minutes, and adds a
+ * token when one is configured (Sites -> Secrets, name GITHUB_TOKEN) to lift
+ * the 60 requests/hour anonymous limit.
+ */
 app.get('/api/github', async (c) => {
   const user = (c.req.query('user') ?? c.env.GITHUB_USER ?? 'ElioXY').replace(/[^\w-]/g, '')
   if (!user) return c.json({ error: 'No GitHub user configured.' }, 400)
@@ -121,6 +125,11 @@ app.get('/api/github', async (c) => {
   }
 })
 
+/*
+ * El formulario de contacto no pasa por el Worker: se envía desde el navegador
+ * a Web3Forms (ver src/app/lib/contact.ts), que entrega en el buzón sin
+ * verificar dominio ni remitente. Aquí solo se sirven los assets.
+ */
 
 app.all('*', (c) => c.env.ASSETS.fetch(c.req.raw))
 

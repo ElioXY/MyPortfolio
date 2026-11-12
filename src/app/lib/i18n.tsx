@@ -5,7 +5,7 @@ export type Locale = (typeof locales)[number]
 
 const es = {
   meta: {
-    title: 'Elio',
+    title: 'Elio — Desarrollador',
     description: 'Portafolio de Elio: apps web con TypeScript y React. Proyectos sincronizados desde GitHub.',
   },
   nav: {
@@ -63,7 +63,7 @@ const es = {
     open: 'Abierto a colaborar en proyectos pequeños',
     busy: 'Sin huecos por ahora',
     email: 'Escríbeme',
-    madeWith: 'Hecho con ❤️',
+    madeWith: 'Hecho con React y Cloudflare',
     synced: 'GitHub sincronizado',
     local: 'Mostrando copia local de GitHub',
     top: 'Volver arriba',
@@ -90,7 +90,7 @@ const es = {
 
 const en: typeof es = {
   meta: {
-    title: 'Elio',
+    title: 'Elio — Developer',
     description: 'Elio’s portfolio: web apps with TypeScript and React. Projects synced straight from GitHub.',
   },
   nav: {
@@ -148,7 +148,7 @@ const en: typeof es = {
     open: 'Open to small collaborations',
     busy: 'No openings right now',
     email: 'Email me',
-    madeWith: 'Built with ❤️',
+    madeWith: 'Built with React and Cloudflare',
     synced: 'GitHub synced',
     local: 'Showing a local copy of GitHub',
     top: 'Back to top',
@@ -183,13 +183,13 @@ function isLocale(value: string | null | undefined): value is Locale {
   return Boolean(value) && (locales as readonly string[]).includes(value as string)
 }
 
-
+/** Idioma guardado, si no el primero del navegador que soportemos. */
 export function detectLocale(): Locale {
   try {
     const stored = localStorage.getItem('locale')
     if (isLocale(stored)) return stored
   } catch {
-    
+    // localStorage puede no estar disponible (modo privado estricto).
   }
   const candidates = navigator.languages?.length ? navigator.languages : [navigator.language]
   for (const candidate of candidates) {
@@ -209,7 +209,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     try {
       localStorage.setItem('locale', next)
     } catch {
-      
+      // Sin persistencia: el idioma dura lo que la sesión.
     }
   }
 

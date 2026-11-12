@@ -19,6 +19,7 @@ export function ContactForm() {
   const [form, setForm] = useState({ name: '', email: '', message: '', company: '' })
   const [status, setStatus] = useState<Status>('idle')
   const [error, setError] = useState('')
+  // El email directo solo tiene sentido cuando falla el envío, no al validar.
   const [deliveryFailed, setDeliveryFailed] = useState(false)
 
   const validate = (): string | null => {
@@ -143,6 +144,7 @@ export function ContactForm() {
               />
             </label>
 
+            {/* Trampa para bots: invisible para personas y lectores de pantalla. */}
             <div aria-hidden className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
               <label>
                 Company

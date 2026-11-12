@@ -1,9 +1,10 @@
-
+// Todo lo que no viene de GitHub vive aquí. El texto está en dos idiomas:
+// el sitio elige uno según el navegador y deja cambiarlo desde el nav.
 
 export const site = {
   name: 'Elio',
   handle: 'ElioXY',
-  
+  // Destino del formulario de contacto y del botón de email.
   email: 'hello@elioxy.us.ci',
   available: true,
   stack: ['TypeScript', 'React', 'Vite', 'Node.js', 'Tailwind CSS', 'Cloudflare', 'Git'],
@@ -31,8 +32,11 @@ export const site = {
   },
 }
 
-
-
+/**
+ * Copia de respaldo: se muestra mientras llega la respuesta del Worker y si
+ * GitHub está caído o sin cuota de peticiones. No hace falta mantenerla al día,
+ * pero así la página nunca se queda vacía.
+ */
 export const fallbackFeed = {
   profile: {
     login: 'ElioXY',
@@ -76,7 +80,20 @@ export const fallbackFeed = {
       fork: false,
       archived: false,
     },
-    
+    {
+      name: 'soulseek-addon',
+      url: 'https://github.com/ElioXY/soulseek-addon',
+      description: 'Addon para SoulSeek.',
+      homepage: null,
+      language: 'JavaScript',
+      stars: 0,
+      forks: 0,
+      topics: [],
+      pushedAt: '2026-10-29T17:13:26Z',
+      createdAt: '2026-10-28T17:43:43Z',
+      fork: true,
+      archived: false,
+    },
   ],
   syncedAt: new Date('2026-10-31T13:11:25Z').toISOString(),
 }
