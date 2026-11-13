@@ -5,15 +5,6 @@ Worker de Cloudflare con Hono. Los proyectos no están escritos a mano: la pági
 pide los repositorios a GitHub a través de `/api/github`, que los cachea 15
 minutos en el edge y usa una copia local si GitHub no responde.
 
-## Correr
-
-```sh
-bun install      # o npm install
-bun run dev      # http://localhost:5173
-bun run build    # dist/client (assets) + dist/portfolio/index.js (Worker)
-bun run typecheck
-```
-
 ## Dónde tocar
 
 - `src/data/site.ts` — nombre, rol, textos ES/EN, herramientas, redes y la copia de
