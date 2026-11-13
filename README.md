@@ -27,10 +27,6 @@ bun run typecheck
 El formulario del pie usa Web3Forms desde el navegador. Copia `.env.example` a
 `.env` y pon tu clave:
 
-```sh
-VITE_WEB3FORMS_KEY=tu-clave
-```
-
 Sin clave, el formulario avisa y muestra el email directo.
 
 ## Opcional
