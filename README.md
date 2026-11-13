@@ -15,10 +15,9 @@ minutos en el edge y usa una copia local si GitHub no responde.
 
 ## Contacto
 
-El formulario del pie usa Web3Forms desde el navegador. Copia `.env.example` a
-`.env` y pon tu clave:
-
-Sin clave, el formulario avisa y muestra el email directo.
+El formulario del pie usa Web3Forms desde el navegador; la clave va en `.env`
+(`VITE_WEB3FORMS_KEY`, ver `.env.example`). Sin clave, el formulario avisa y
+muestra el email directo.
 
 ## Opcional
 
@@ -30,5 +29,5 @@ npx wrangler secret put GITHUB_TOKEN
 
 ## Desplegar
 
-`deploy.json` apunta al resultado del build; tras `bun run build`, despliega con
+`deploy.json` apunta al resultado del build; tras `npm run build`, despliega con
 `sites_deploy` desde este directorio.
