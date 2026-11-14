@@ -3,9 +3,10 @@ import { useState } from 'react'
 import { cx } from '../lib/cx'
 
 /**
- * Avatar con red de seguridad: si la URL del CDN de GitHub falla, prueba
- * github.com/<login>.png y, si tampoco, dibuja la inicial sobre el degradado de
- * la marca. Así nunca se ve el icono de imagen rota.
+ * Avatar con red de seguridad: primero el proxy del propio dominio (la CSP del
+ * sitio solo permite imágenes de `'self'` y `data:`, así que el CDN de GitHub
+ * no se puede cargar directamente), después la URL recibida de GitHub y, si
+ * nada funciona, la inicial sobre el degradado de la marca.
  */
 export function ProfileImage({
   src,
@@ -22,7 +23,11 @@ export function ProfileImage({
   className?: string
   letterClassName?: string
 }) {
-  const sources = [src, `https://github.com/${login}.png?size=400`].filter(Boolean)
+  const sources = [
+    `/api/avatar?user=${encodeURIComponent(login)}`,
+    src,
+    `https://github.com/${login}.png?size=400`,
+  ].filter(Boolean)
   const [index, setIndex] = useState(0)
 
   if (index >= sources.length) {

@@ -41,6 +41,48 @@ const app = new Hono<{ Bindings: Env }>()
 app.get('/api/health', (c) => c.json({ ok: true }))
 
 /**
+ * Avatar del perfil, servido desde el propio dominio. La CSP del sitio solo
+ * permite imágenes de `'self'` y `data:`, así que el navegador no puede pedir el
+ * CDN de GitHub directamente: el Worker lo trae y lo cachea en el edge.
+ */
+app.get('/api/avatar', async (c) => {
+  const user = (c.req.query('user') ?? c.env.GITHUB_USER ?? 'ElioXY').replace(/[^\w-]/g, '')
+  if (!user) return c.json({ error: 'No GitHub user configured.' }, 400)
+
+  const cache = await caches.open('avatar')
+  const key = new Request(`https://avatar.internal/${user}`)
+  const cached = await cache.match(key).catch(() => undefined)
+  if (cached) return new Response(cached.body, cached)
+
+  try {
+    const upstream = await fetch(`https://github.com/${user}.png?size=400`, {
+      headers: { 'user-agent': 'portfolio-site' },
+      redirect: 'follow',
+    })
+    const type = upstream.headers.get('content-type') ?? ''
+    if (!upstream.ok || !type.startsWith('image/')) {
+      return c.json({ error: 'upstream_error', status: upstream.status }, 502)
+    }
+
+    const response = new Response(upstream.body, {
+      headers: {
+        'content-type': type,
+        'cache-control': 'public, max-age=3600, s-maxage=86400',
+      },
+    })
+    const cacheWrite = cache.put(key, response.clone())
+    try {
+      c.executionCtx.waitUntil(cacheWrite)
+    } catch {
+      // Sin executionCtx (por ejemplo en pruebas locales) se ignora.
+    }
+    return response
+  } catch {
+    return c.json({ error: 'upstream_error' }, 502)
+  }
+})
+
+/**
  * Live GitHub feed. The browser never talks to api.github.com directly: the
  * Worker does it, caches the result at the edge for 15 minutes, and adds a
  * token when one is configured (Sites -> Secrets, name GITHUB_TOKEN) to lift

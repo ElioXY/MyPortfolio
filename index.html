@@ -15,17 +15,8 @@
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/svg+xml" sizes="any" href="/icon.svg" />
     <link rel="mask-icon" href="/icon.svg" color="#2f3bff" />
-    <script>
-      // Aplica el tema antes del primer pintado para que no haya destello.
-      (function () {
-        try {
-          var stored = localStorage.getItem('theme')
-          var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches
-          if (dark) document.documentElement.classList.add('dark')
-          document.documentElement.style.colorScheme = dark ? 'dark' : 'light'
-        } catch (error) {}
-      })()
-    </script>
+    <!-- Archivo aparte, no en línea: la CSP del sitio solo permite `script-src 'self'`. -->
+    <script src="/theme-init.js"></script>
   </head>
   <body>
     <div id="root"></div>
