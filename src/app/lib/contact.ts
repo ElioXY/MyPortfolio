@@ -3,10 +3,13 @@
  *
  * Web3Forms entrega a un buzón sin verificar dominio ni remitente: se pide una
  * clave para `hello@elioxy.us.ci` y los mensajes llegan a esa bandeja. Su API
- * está pensada para llamarse desde el navegador (el uso desde servidor exige
- * plan de pago y lista blanca de IPs), así que la clave viaja en el build. No es
- * un secreto: solo puede enviar mensajes a ese buzón, y para eso está el campo
- * trampa. Cualquier otro dato del proyecto sigue en el Worker.
+ * está pensada para llamarse desde el navegador (rechaza el envío desde servidor
+ * con 403 y pide el plan Pro para autorizar IPs), así que la clave viaja en el
+ * build. No es un secreto: solo puede enviar mensajes a ese buzón, y para eso
+ * está el campo trampa. Cualquier otro dato del proyecto sigue en el Worker.
+ *
+ * La CSP del dominio necesita `connect-src 'self' https://api.web3forms.com`;
+ * sin eso el navegador bloquea la petición antes de salir.
  */
 const ACCESS_KEY = (import.meta.env.VITE_WEB3FORMS_KEY as string | undefined)?.trim()
 

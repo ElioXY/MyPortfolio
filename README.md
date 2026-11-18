@@ -15,9 +15,11 @@ minutos en el edge y usa una copia local si GitHub no responde.
 
 ## Contacto
 
-El formulario del pie usa Web3Forms desde el navegador; la clave va en `.env`
-(`VITE_WEB3FORMS_KEY`, ver `.env.example`). Sin clave, el formulario avisa y
-muestra el email directo.
+El formulario del pie envía desde el navegador a Web3Forms; la clave va en `.env`
+(`VITE_WEB3FORMS_KEY`, ver `.env.example`) y en el build de Cloudflare como
+variable de build. La CSP del dominio necesita `connect-src 'self'
+https://api.web3forms.com` o el navegador bloquea la petición. Sin clave, el
+formulario avisa y muestra el email directo.
 
 ## Opcional
 

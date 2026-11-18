@@ -261,3 +261,31 @@ html.dark {
   backdrop-filter: blur(14px) saturate(140%);
   border-bottom: 1px solid color-mix(in srgb, var(--app-line) 70%, transparent);
 }
+
+/* En pantallas pequeñas el móvil pinta a menos resolución y con menos GPU: los
+   halos con blur de 64px y el grano se comen los frames de las animaciones. Se
+   recortan ahí, donde el detalle apenas se nota, y en escritorio quedan igual. */
+@media (max-width: 640px) {
+  .hero-field > div > div {
+    filter: blur(26px);
+  }
+  .grain {
+    display: none;
+  }
+  .nav-blur {
+    background: color-mix(in srgb, var(--app-bg) 94%, transparent);
+    backdrop-filter: none;
+  }
+}
+
+/* Sin puntero fino no hay hover ni cursor propio: el toque tiene que notarse. */
+@media (hover: none) {
+  a,
+  button {
+    transition: transform 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  a:active,
+  button:active {
+    transform: scale(0.97);
+  }
+}
