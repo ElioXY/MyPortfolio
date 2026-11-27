@@ -8,10 +8,17 @@
  * build. No es un secreto: solo puede enviar mensajes a ese buzón, y para eso
  * está el campo trampa. Cualquier otro dato del proyecto sigue en el Worker.
  *
+ * La clave va en el código porque es pública (toda clave de Web3Forms lo es: el
+ * navegador la envía en cada petición) y así el build de Cloudflare la tiene sin
+ * depender de variables del panel, que se olvidan. `.env` con
+ * `VITE_WEB3FORMS_KEY` la sustituye si algún día se rota.
+ *
  * La CSP del dominio necesita `connect-src 'self' https://api.web3forms.com`;
  * sin eso el navegador bloquea la petición antes de salir.
  */
-const ACCESS_KEY = (import.meta.env.VITE_WEB3FORMS_KEY as string | undefined)?.trim()
+const PUBLIC_ACCESS_KEY = '7550287a-e7d0-40c6-b104-dc2607d08626'
+
+const ACCESS_KEY = (import.meta.env.VITE_WEB3FORMS_KEY as string | undefined)?.trim() || PUBLIC_ACCESS_KEY
 
 export const contactConfigured = Boolean(ACCESS_KEY)
 
